@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-type LoginStateType = {
+export type LoginStateType = {
   username: string;
   password: string;
 };
@@ -15,7 +15,11 @@ export const useLogin = (state: LoginStateType) => {
   const change = (name: string, value: string) => {
     setData((data) => ({ ...data, [name]: value }));
   };
-  const submit = () => {
-    
+  const submit = async() => {
+    try {
+
+    } catch (err) {
+        
+    }
   }
 };

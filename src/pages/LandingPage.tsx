@@ -10,9 +10,9 @@ import { useContext } from "react";
 import { GlobalNavigationContext } from "../contexts/GlobalNavigationContext";
 const features = [
   {
-    name: "Financial Tracking",
+    name: "Financial and Project Tracking",
     description:
-      "Keep track of your expenses and assets and allow the power of our technology to simplify your companies finances.",
+      "Keep track of your expenses and projects and allow the power of our technology to simplify your company's goals.",
     icon: CurrencyDollarIcon,
   },
   {
@@ -24,13 +24,12 @@ const features = [
   {
     name: "Deep Insights",
     description:
-      "Along with this service, you will have free access to data driven insights to help you navigate your finances.",
+      "Along with this service, you will have free access to data driven insights to help you navigate your business decisions.",
     icon: ChartBarIcon,
   },
   {
-    name: "Customer Service",
-    description:
-      "We know that life can be tough, that is why we are here 24/7 to assist you in any area.",
+    name: "Streamlined Customer Onboarding",
+    description: "Customer relationship management has never been easier.",
     icon: ChatBubbleBottomCenterIcon,
   },
 ];
@@ -47,7 +46,7 @@ export default function LandingPage() {
             NodeSpace CRM
           </p>
           <p className="mt-6 text-lg leading-8 text-gray-600">
-            Expense Tracking Made Simple
+            Business Management Made Simple
           </p>
         </div>
         <div className="mx-auto mt-16 max-w-2xl sm:mt-20 lg:mt-24 lg:max-w-4xl">
