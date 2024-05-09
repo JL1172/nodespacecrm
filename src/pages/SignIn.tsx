@@ -3,8 +3,6 @@ import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Checkbox from "@mui/material/Checkbox";
 import Link from "@mui/material/Link";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
@@ -14,87 +12,168 @@ import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { GlobalNavigationContext } from "../contexts/GlobalNavigationContext";
 import { IoArrowBack } from "react-icons/io5";
+import FallingSpinner from "../components/LoadingSpinner";
+import { Alert } from "@mui/material";
+import { StyledSignIn } from "../styles/StyledSignIn";
 
-// TODO remove, this demo shouldn't need to reset the theme.
 const defaultTheme = createTheme();
 
 export default function SignIn() {
-  const { ...nav } = React.useContext(GlobalNavigationContext);
+  const { ...state } = React.useContext(GlobalNavigationContext);
   return (
-    <ThemeProvider theme={defaultTheme}>
-      <IoArrowBack onClick={()=>nav.nav('/')} id = 'arrow-pointer' style={{ position: "fixed", top: "1rem", left: '1rem', width: '1.2rem', height: '1.2rem', cursor: 'pointer' }} />
-      <Container
-        component="main"
-        maxWidth="xs"
-        sx={{
-          height: "90dvh",
-          display: "flex",
-          alignItems: "center",
-        }}
-      >
-        <CssBaseline />
-        <Box
-          sx={{
-            marginTop: 8,
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-          }}
+    <StyledSignIn>
+      {state.globalError && (
+        <Alert
+          severity="error"
+          sx={{ position: "fixed", top: "0", width: "100%" }}
         >
-          <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
-            <LockOutlinedIcon />
-          </Avatar>
-          <Typography component="h1" variant="h5">
-            Sign in
-          </Typography>
-          <Box component="form" noValidate sx={{ mt: 1 }}>
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              id="email"
-              label="Email Address"
-              name="email"
-              autoComplete="email"
-              autoFocus
-            />
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              name="password"
-              label="Password"
-              type="password"
-              id="password"
-              autoComplete="current-password"
-            />
-            <FormControlLabel
-              control={<Checkbox value="remember" color="primary" />}
-              label="Remember me"
-            />
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              sx={{ mt: 3, mb: 2 }}
+          {state.globalError}
+        </Alert>
+      )}
+      {state.spinnerOn && <FallingSpinner />}
+      {!state.spinnerOn && (
+        <ThemeProvider theme={defaultTheme}>
+          <IoArrowBack
+            onClick={() => state.nav("/")}
+            id="arrow-pointer"
+            style={{
+              position: "fixed",
+              top: "1rem",
+              left: "1rem",
+              width: "1.2rem",
+              height: "1.2rem",
+              cursor: "pointer",
+            }}
+          />
+          <Container
+            component="main"
+            sx={{
+              height: "100dvh",
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <CssBaseline />
+            <Box
+              className="box"
+              sx={{
+                marginTop: 8,
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+              }}
             >
-              Sign In
-            </Button>
-            <Grid container>
-              <Grid item xs>
-                <Link href="#" variant="body2">
-                  Forgot password?
-                </Link>
-              </Grid>
-              <Grid item>
-                <Link onClick={() => nav.nav("/sign-up")} variant="body2">
-                  {"Don't have an account? Sign Up"}
-                </Link>
-              </Grid>
-            </Grid>
-          </Box>
-        </Box>
-      </Container>
-    </ThemeProvider>
+              <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
+                <LockOutlinedIcon />
+              </Avatar>
+              <Typography component="h1" variant="h5">
+                Sign in
+              </Typography>
+              <Box
+                className="inner-box"
+                component="form"
+                noValidate
+                sx={{ mt: 1 }}
+                onSubmit={(e) => {
+                  e.preventDefault();
+                }}
+              >
+                <TextField
+                  onChange={(e) => state.change(e.target.name, e.target.value)}
+                  margin="normal"
+                  required
+                  fullWidth
+                  id="username"
+                  label="Username"
+                  value={state.loginData.username}
+                  name="username"
+                  autoComplete="username"
+                  autoFocus
+                />
+                {state.loginData.usernameError && (
+                  <Alert
+                    variant="outlined"
+                    severity="error"
+                    sx={{ width: "100%" }}
+                  >
+                    {Object.values(state.loginData.usernameError).map(
+                      (n, i) => {
+                        return (
+                          <span
+                            style={{ display: "flex", flexDirection: "column" }}
+                            key={i}
+                          >
+                            {n}
+                          </span>
+                        );
+                      }
+                    )}
+                  </Alert>
+                )}
+                <TextField
+                  margin="normal"
+                  required
+                  onChange={(e) => state.change(e.target.name, e.target.value)}
+                  value={state.loginData.password}
+                  fullWidth
+                  name="password"
+                  label="Password"
+                  type="password"
+                  id="password"
+                  autoComplete="current-password"
+                />
+                {state.loginData.passwordError && (
+                  <Alert
+                    variant="outlined"
+                    severity="error"
+                    sx={{ width: "100%" }}
+                  >
+                    {Object.values(state.loginData.passwordError).map(
+                      (n, i) => {
+                        return (
+                          <span
+                            style={{ display: "flex", flexDirection: "column" }}
+                            key={i}
+                          >
+                            {n}
+                          </span>
+                        );
+                      }
+                    )}
+                  </Alert>
+                )}
+                <Button
+                  type="submit"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    state.submit();
+                  }}
+                  fullWidth
+                  variant="contained"
+                  sx={{ mt: 3, mb: 2 }}
+                >
+                  Sign In
+                </Button>
+                <Grid container>
+                  <Grid item xs>
+                    <Link href="#" variant="body2">
+                      Forgot password?
+                    </Link>
+                  </Grid>
+                  <Grid item>
+                    <Link onClick={() => state.nav("/sign-up")} variant="body2">
+                      {"Don't have an account? Sign Up"}
+                    </Link>
+                  </Grid>
+                </Grid>
+              </Box>
+            </Box>
+          </Container>
+        </ThemeProvider>
+      )}
+    </StyledSignIn>
+    //   );
   );
 }

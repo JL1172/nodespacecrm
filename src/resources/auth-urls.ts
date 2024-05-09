@@ -1,6 +1,6 @@
 import { BASE_URL } from "./base-url";
 
-const AUTH_BASE = BASE_URL + "/api/auth";
+const AUTH_BASE = BASE_URL + "api/auth";
 
 export type AuthUrlsType = {
   signIn: string;
