@@ -25,7 +25,6 @@ export default function VerificationCode() {
   const { ...state } = useContext(GlobalNavigationContext);
   useEffect(() => {
     const length = state.resetData.verification_code.filter((n) => n).length;
-    console.log(length);
     if (length === 6) {
       state.secondStepOfPasswordResetProcess();
     }
@@ -34,6 +33,14 @@ export default function VerificationCode() {
     <FallingSpinner />
   ) : (
     <StyledVerificationCodePage>
+      {state.resetData.secondStepGeneralError && (
+        <Alert
+          severity="error"
+          sx={{ position: "fixed", top: "0", width: "100%", zIndex: 2 }}
+        >
+          {state.resetData.secondStepGeneralError}
+        </Alert>
+      )}
       {state.resetData.firstStepSuccessMessage && (
         <Alert
           variant="filled"

@@ -17,6 +17,7 @@ type GlobalNaviationContextType = {
   changeHandlerForVerificationCode: (name:string, idx: number) => void;
   secondStepOfPasswordResetProcess: () => void;
   regenerateVerificationCode: () => void;
+  thirdStepOfPasswordResetProcess: () => void;
 };
 
 export const GlobalNavigationContext = createContext<

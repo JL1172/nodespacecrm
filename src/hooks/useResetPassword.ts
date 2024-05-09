@@ -2,6 +2,7 @@ import { useState } from "react";
 import {
   firstStepPasswordReset,
   secondStepPasswordReset,
+  thirdStepPasswordReset,
 } from "../utils/authentication-endpoint";
 
 // email: string;
@@ -50,7 +51,8 @@ export const useResetPassword = (
   typeof firstStepOfPasswordResetProcess,
   typeof changeHandlerForVerificationCode,
   typeof secondStepOfPasswordResetProcess,
-  typeof regenerateVerificationCode
+  typeof regenerateVerificationCode,
+  typeof thirdStepOfPasswordResetProcess
 ] => {
   const [data, setData] = useState(state);
   const change = (name: string, value: string | boolean) => {
@@ -147,9 +149,15 @@ export const useResetPassword = (
       setTimeout(() => {
         setData((data) => ({ ...data, secondStepSuccess: "" }));
       }, 4000);
-      console.log(res);
-    } catch (err) {
-      console.log(err);
+      //eslint-disable-next-line
+    } catch (err: any) {
+      setData((data) => ({
+        ...data,
+        secondStepGeneralError:
+          (typeof err?.response?.data?.message === "string" &&
+            err?.response?.data?.message) ||
+          "An Unexpected Problem Occurred.",
+      }));
     } finally {
       setData((data) => ({
         ...data,
@@ -161,6 +169,53 @@ export const useResetPassword = (
       }, 3000);
     }
   };
+  const thirdStepOfPasswordResetProcess = async () => {
+    setData((data) => ({
+      ...data,
+      spinnerOn: true,
+      thirdStepError: "",
+      thirdStepGeneralError: "",
+    }));
+    try {
+      const res = await thirdStepPasswordReset({
+        password: data.password,
+        confirmedPassword: data.confirmedPassword,
+      });
+      setData(data => ({...data, secondStepSuccess: res.data}))
+      setTimeout(()=>{
+        setData(initialResetPassword);
+        window.localStorage.clear();
+        nav('/sign-in')
+      }, 3000)
+      //eslint-disable-next-line
+    } catch (err: any) {
+      const confPswordMessage = err?.response?.data?.message?.confirmedPassword;
+      const pswordMessage = err?.response?.data?.message?.password;
+      if (!pswordMessage || !confPswordMessage) {
+        const message = err?.response?.data?.message;
+        setData((data) => ({
+          ...data,
+          thirdStepGeneralError:
+            message + " Redirecting To Start." ||
+            err.message + " Redirecting To Start" ||
+            "An Unexpected Problem Occurred.",
+        }));
+        setTimeout(() => {
+          nav("/change-password"), setData(initialResetPassword);
+        }, 3000);
+      } else {
+        setData((data) => ({
+          ...data,
+          thirdStepError: confPswordMessage || pswordMessage,
+        }));
+      }
+    } finally {
+      setData((data) => ({ ...data, spinnerOn: false }));
+      setTimeout(() => {
+        setData((data) => ({ ...data, thirdStepGeneralError: "" }));
+      }, 4000);
+    }
+  };
   return [
     data,
     change,
@@ -168,5 +223,6 @@ export const useResetPassword = (
     changeHandlerForVerificationCode,
     secondStepOfPasswordResetProcess,
     regenerateVerificationCode,
+    thirdStepOfPasswordResetProcess,
   ];
 };

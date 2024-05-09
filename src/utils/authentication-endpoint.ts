@@ -26,6 +26,18 @@ export const firstStepPasswordReset = (email: string) => {
   return axios.post(AuthUrls.changePswrd, { email: email });
 };
 
-export const secondStepPasswordReset = (reqBody: {email: string, verification_code: string}) => {
+export const secondStepPasswordReset = (reqBody: {
+  email: string;
+  verification_code: string;
+}) => {
   return axios.post(AuthUrls.verifyCode, reqBody);
-}
+};
+export const thirdStepPasswordReset = (reqBody: {
+  password: string;
+  confirmedPassword: string;
+}) => {
+  const token = window.localStorage.getItem("token");
+  return axios
+    .create({ headers: { Authorization: token } })
+    .post(AuthUrls.resetPswrd, reqBody);
+};

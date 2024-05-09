@@ -12,6 +12,7 @@ import {
   useResetPassword,
 } from "./hooks/useResetPassword";
 import VerificationCode from "./pages/VerificationCode";
+import ResetPassword from "./pages/ResetPassword";
 
 export default function App() {
   const nav = useNavigate();
@@ -24,10 +25,15 @@ export default function App() {
     setLandingPageError,
     landingPageError,
   ] = useLogin(initialState, nav);
-  const [resetData, resetChange, firstStepOfPswrdReset, changeHandlerForVerificationCode,secondStepOfPasswordResetProcess,regenerateVerificationCode] = useResetPassword(
-    initialResetPassword,
-    nav
-  );
+  const [
+    resetData,
+    resetChange,
+    firstStepOfPswrdReset,
+    changeHandlerForVerificationCode,
+    secondStepOfPasswordResetProcess,
+    regenerateVerificationCode,
+    thirdStepOfPasswordResetProcess,
+  ] = useResetPassword(initialResetPassword, nav);
   return (
     <GlobalNavigationContext.Provider
       value={{
@@ -44,7 +50,8 @@ export default function App() {
         firstStepOfPswrdReset,
         changeHandlerForVerificationCode,
         secondStepOfPasswordResetProcess,
-        regenerateVerificationCode
+        regenerateVerificationCode,
+        thirdStepOfPasswordResetProcess,
       }}
     >
       <Routes>
@@ -53,6 +60,7 @@ export default function App() {
         <Route path="/sign-up" element={<SignUp />} />
         <Route path="/change-password" element={<ChangePassword />} />
         <Route path="/verify-code" element={<VerificationCode />} />
+        <Route path="/reset-password" element={<ResetPassword />} />
         <Route path="/protected" element={<ProtectRoute />} />
       </Routes>
     </GlobalNavigationContext.Provider>
