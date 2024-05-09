@@ -16,15 +16,15 @@ export const initialState: LoginStateType = {
 };
 
 export const useLogin = (
-  state: LoginStateType
+  state: LoginStateType,   nav: (address: string) => void,
 ): [
   LoginStateType,
   typeof change,
   typeof submit,
   typeof spinnerOn,
-  typeof globalError
+  typeof globalError,
 ] => {
-  const [globalError, setGlobalError] = useState<string>("Too Many Requests");
+  const [globalError, setGlobalError] = useState<string>("");
   const [spinnerOn, setSpinnerOn] = useState<boolean>(false);
   const [data, setData] = useState(state);
   const change = (name: string, value: string) => {
@@ -43,7 +43,9 @@ export const useLogin = (
         username: data.username,
         password: data.password,
       });
-      console.log(res);
+      const token = res.data.token;
+      window.localStorage.setItem("token", token);
+      nav('/protected')
       //eslint-disable-next-line
     } catch (err: any) {
       const usernameMessage = err?.response?.data?.message?.username;

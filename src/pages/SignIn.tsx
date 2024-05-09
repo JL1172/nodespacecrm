@@ -25,7 +25,7 @@ export default function SignIn() {
       {state.globalError && (
         <Alert
           severity="error"
-          sx={{ position: "fixed", top: "0", width: "100%" }}
+          sx={{ position: "fixed", top: "0", width: "100%", zIndex: 2 }}
         >
           {state.globalError}
         </Alert>
