@@ -16,19 +16,29 @@ export const initialState: LoginStateType = {
 };
 
 export const useLogin = (
-  state: LoginStateType,   nav: (address: string) => void,
+  state: LoginStateType,
+  nav: (address: string) => void
 ): [
   LoginStateType,
   typeof change,
   typeof submit,
   typeof spinnerOn,
   typeof globalError,
+  typeof changeLandingPageError,
+  typeof landingPageError
 ] => {
+  const [landingPageError, setLandingPageError] = useState<string>("");
   const [globalError, setGlobalError] = useState<string>("");
   const [spinnerOn, setSpinnerOn] = useState<boolean>(false);
   const [data, setData] = useState(state);
   const change = (name: string, value: string) => {
     setData((data) => ({ ...data, [name]: value }));
+  };
+  const changeLandingPageError = (err: string) => {
+    setLandingPageError(err);
+    setTimeout(() => {
+      setLandingPageError("");
+    }, 3000);
   };
   const submit = async () => {
     setSpinnerOn(true);
@@ -45,7 +55,7 @@ export const useLogin = (
       });
       const token = res.data.token;
       window.localStorage.setItem("token", token);
-      nav('/protected')
+      nav("/protected");
       //eslint-disable-next-line
     } catch (err: any) {
       const usernameMessage = err?.response?.data?.message?.username;
@@ -68,5 +78,13 @@ export const useLogin = (
       setSpinnerOn(false);
     }
   };
-  return [data, change, submit, spinnerOn, globalError];
+  return [
+    data,
+    change,
+    submit,
+    spinnerOn,
+    globalError,
+    changeLandingPageError,
+    landingPageError,
+  ];
 };

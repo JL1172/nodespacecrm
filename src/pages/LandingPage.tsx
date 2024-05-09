@@ -4,7 +4,7 @@ import {
   ChartBarIcon,
   ChatBubbleBottomCenterIcon,
 } from "@heroicons/react/24/outline";
-import { Button } from "@mui/material";
+import { Alert, Button } from "@mui/material";
 import { StyledButton } from "../styles/StyledButton";
 import { useContext } from "react";
 import { GlobalNavigationContext } from "../contexts/GlobalNavigationContext";
@@ -34,9 +34,17 @@ const features = [
   },
 ];
 export default function LandingPage() {
-  const { ...nav } = useContext(GlobalNavigationContext);
+  const { ...state } = useContext(GlobalNavigationContext);
   return (
     <div className="bg-white py-24 sm:py-32">
+      {state.landingPageError && (
+        <Alert
+          severity="error"
+          sx={{ position: "fixed", top: "0", width: "100%", zIndex: 2 }}
+        >
+          {state.landingPageError}
+        </Alert>
+      )}
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         <div className="mx-auto max-w-2xl lg:text-center">
           <h2 className="text-base font-semibold leading-7 text-indigo-600">
@@ -72,7 +80,7 @@ export default function LandingPage() {
       </div>
       <StyledButton>
         <Button
-          onClick={() => nav.nav("/sign-up")}
+          onClick={() => state.nav("/sign-up")}
           variant="contained"
           sx={{
             bgcolor: "#4F46E5",
@@ -86,7 +94,7 @@ export default function LandingPage() {
           Create an Account
         </Button>
         <Button
-          onClick={() => nav.nav("/sign-in")}
+          onClick={() => state.nav("/sign-in")}
           variant="outlined"
           sx={{
             borderColor: "#4F46E5",

@@ -8,6 +8,8 @@ type GlobalNaviationContextType = {
   submit: () => void;
   spinnerOn: boolean;
   globalError: string;
+  setLandingPageError: (message: string) => void;
+  landingPageError: string;
 };
 
 export const GlobalNavigationContext = createContext<

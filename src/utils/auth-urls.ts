@@ -9,6 +9,7 @@ export type AuthUrlsType = {
   verifyCode: string;
   resetPswrd: string;
   validateToken: string;
+  logout: string;
 };
 
 export const AuthUrls: AuthUrlsType = {
@@ -18,4 +19,5 @@ export const AuthUrls: AuthUrlsType = {
   verifyCode: AUTH_BASE + "/verify-code",
   resetPswrd: AUTH_BASE + "/reset-password",
   validateToken: AUTH_BASE + "/restricted",
+  logout: AUTH_BASE + "/logout",
 };

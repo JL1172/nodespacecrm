@@ -15,3 +15,9 @@ export const validateToken = (token: string) => {
     .create({ headers: { Authorization: token } })
     .get(AuthUrls.validateToken);
 };
+
+export const logout = (token: string) => {
+  return axios
+    .create({ headers: { Authorization: token } })
+    .get(AuthUrls.logout);
+};
