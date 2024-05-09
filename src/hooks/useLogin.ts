@@ -55,6 +55,7 @@ export const useLogin = (
       });
       const token = res.data.token;
       window.localStorage.setItem("token", token);
+      setData(initialState);
       nav("/protected");
       //eslint-disable-next-line
     } catch (err: any) {

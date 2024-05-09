@@ -18,20 +18,20 @@ import { StyledSignIn } from "../styles/StyledSignIn";
 
 const defaultTheme = createTheme();
 
-export default function SignIn() {
+export default function ChangePassword() {
   const { ...state } = React.useContext(GlobalNavigationContext);
   return (
     <StyledSignIn>
-      {state.globalError && (
+      {state.resetData.firstStepGeneralError && (
         <Alert
           severity="error"
           sx={{ position: "fixed", top: "0", width: "100%", zIndex: 2 }}
         >
-          {state.globalError}
+          {state.resetData.firstStepGeneralError}
         </Alert>
       )}
-      {state.spinnerOn && <FallingSpinner />}
-      {!state.spinnerOn && (
+      {state.resetData.spinnerOn && <FallingSpinner />}
+      {!state.resetData.spinnerOn && (
         <ThemeProvider theme={defaultTheme}>
           <IoArrowBack
             onClick={() => state.nav("/")}
@@ -69,7 +69,7 @@ export default function SignIn() {
                 <LockOutlinedIcon />
               </Avatar>
               <Typography component="h1" variant="h5">
-                Sign in
+                Reset Password
               </Typography>
               <Box
                 className="inner-box"
@@ -81,93 +81,50 @@ export default function SignIn() {
                 }}
               >
                 <TextField
-                  onChange={(e) => state.change(e.target.name, e.target.value)}
+                  onChange={(e) => state.resetChange(e.target.name, e.target.value)}
                   margin="normal"
                   required
                   fullWidth
-                  id="username"
-                  label="Username"
-                  value={state.loginData.username}
-                  name="username"
-                  autoComplete="username"
+                  id="email"
+                  label="Email"
+                  value={state.resetData.email}
+                  name="email"
+                  autoComplete="email"
                   autoFocus
                 />
-                {state.loginData.usernameError && (
+                {state.resetData.firstStepError && (
                   <Alert
                     variant="outlined"
                     severity="error"
                     sx={{ width: "100%" }}
                   >
-                    {Object.values(state.loginData.usernameError).map(
-                      (n, i) => {
-                        return (
-                          <span
-                            style={{ display: "flex", flexDirection: "column" }}
-                            key={i}
-                          >
-                            {n}
-                          </span>
-                        );
-                      }
-                    )}
-                  </Alert>
-                )}
-                <TextField
-                  margin="normal"
-                  required
-                  onChange={(e) => state.change(e.target.name, e.target.value)}
-                  value={state.loginData.password}
-                  fullWidth
-                  name="password"
-                  label="Password"
-                  type="password"
-                  id="password"
-                  autoComplete="current-password"
-                />
-                {state.loginData.passwordError && (
-                  <Alert
-                    variant="outlined"
-                    severity="error"
-                    sx={{ width: "100%" }}
-                  >
-                    {Object.values(state.loginData.passwordError).map(
-                      (n, i) => {
-                        return (
-                          <span
-                            style={{ display: "flex", flexDirection: "column" }}
-                            key={i}
-                          >
-                            {n}
-                          </span>
-                        );
-                      }
-                    )}
+                    {state.resetData.firstStepError}
                   </Alert>
                 )}
                 <Button
                   type="submit"
                   onClick={(e) => {
                     e.preventDefault();
-                    state.submit();
+                    state.firstStepOfPswrdReset();
                   }}
                   fullWidth
                   variant="contained"
                   sx={{ mt: 3, mb: 2 }}
                 >
-                  Sign In
+                  Reset Password
                 </Button>
                 <Grid container>
                   <Grid item xs>
-                    <Link
-                      sx={{ cursor: "pointer" }}
-                      onClick={() => state.nav("/change-password")}
-                      variant="body2"
-                    >
-                      Forgot password?
+                    <Link href="/sign-in" variant="body2">
+                      Sign In
                     </Link>
                   </Grid>
                   <Grid item>
-                    <Link sx={{ cursor: "pointer" }} onClick={() => state.nav("/sign-up")} variant="body2">
+                    <Link
+                      sx={{ cursor: "pointer" }}
+                      onClick={() => state.nav("/sign-up")}
+                      variant="body2"
+                    >
                       {"Don't have an account? Sign Up"}
                     </Link>
                   </Grid>

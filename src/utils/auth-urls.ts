@@ -15,7 +15,7 @@ export type AuthUrlsType = {
 export const AuthUrls: AuthUrlsType = {
   signIn: AUTH_BASE + "/login",
   signUp: AUTH_BASE + "/registration",
-  changePswrd: AUTH_BASE + "/registration",
+  changePswrd: AUTH_BASE + "/change-password",
   verifyCode: AUTH_BASE + "/verify-code",
   resetPswrd: AUTH_BASE + "/reset-password",
   validateToken: AUTH_BASE + "/restricted",

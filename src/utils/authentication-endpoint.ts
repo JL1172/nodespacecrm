@@ -21,3 +21,11 @@ export const logout = (token: string) => {
     .create({ headers: { Authorization: token } })
     .get(AuthUrls.logout);
 };
+
+export const firstStepPasswordReset = (email: string) => {
+  return axios.post(AuthUrls.changePswrd, { email: email });
+};
+
+export const secondStepPasswordReset = (reqBody: {email: string, verification_code: string}) => {
+  return axios.post(AuthUrls.verifyCode, reqBody);
+}
