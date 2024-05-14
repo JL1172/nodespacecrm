@@ -5,7 +5,7 @@ import {
   ChatBubbleBottomCenterIcon,
 } from "@heroicons/react/24/outline";
 import { Alert, Button } from "@mui/material";
-import { StyledButton } from "../styles/StyledButton";
+import { StyledButton } from "../styles/component-styles/StyledButton";
 import { useContext } from "react";
 import { GlobalNavigationContext } from "../contexts/GlobalNavigationContext";
 const features = [

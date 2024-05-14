@@ -1,6 +1,7 @@
 import { createContext } from "react";
 import { LoginStateType } from "../hooks/useLogin";
 import { ChangePasswordBody } from "../hooks/useResetPassword";
+import { RegisterStateType } from "../hooks/useRegister";
 
 type GlobalNaviationContextType = {
   nav: (address: string) => void;
@@ -18,6 +19,9 @@ type GlobalNaviationContextType = {
   secondStepOfPasswordResetProcess: () => void;
   regenerateVerificationCode: () => void;
   thirdStepOfPasswordResetProcess: () => void;
+  registerData: RegisterStateType;
+  changeRegisterData: (name: string, value: string | boolean | number) => void;
+  submitRegisterData: () => void;
 };
 
 export const GlobalNavigationContext = createContext<

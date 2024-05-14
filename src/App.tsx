@@ -13,9 +13,12 @@ import {
 } from "./hooks/useResetPassword";
 import VerificationCode from "./pages/VerificationCode";
 import ResetPassword from "./pages/ResetPassword";
+import { registerInitialState, useRegister } from "./hooks/useRegister";
 
 export default function App() {
   const nav = useNavigate();
+  const [registerData, changeRegisterData, submitRegisterData] =
+    useRegister(registerInitialState);
   const [
     loginData,
     change,
@@ -52,6 +55,9 @@ export default function App() {
         secondStepOfPasswordResetProcess,
         regenerateVerificationCode,
         thirdStepOfPasswordResetProcess,
+        registerData,
+        changeRegisterData,
+        submitRegisterData,
       }}
     >
       <Routes>

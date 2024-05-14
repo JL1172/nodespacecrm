@@ -1,5 +1,5 @@
 import { Alert, Avatar, Button, TextField, Typography } from "@mui/material";
-import { StyledVerificationCodePage } from "../styles/StyledVerificationCodePage";
+import { StyledVerificationCodePage } from "../styles/page-styles/StyledVerificationCodePage";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import { GlobalNavigationContext } from "../contexts/GlobalNavigationContext";
 import { useContext, useEffect } from "react";
@@ -28,7 +28,7 @@ export default function VerificationCode() {
     if (length === 6) {
       state.secondStepOfPasswordResetProcess();
     }
-  }, [state.resetData.verification_code]);
+  }, [state.resetData.verification_code]);//eslint-disable-line
   return state.resetData.spinnerOn ? (
     <FallingSpinner />
   ) : (
@@ -63,24 +63,25 @@ export default function VerificationCode() {
           onChange={(e) =>
             state.changeHandlerForVerificationCode(e.target.value, 0)
           }
-          //   margin="normal"
-          required
-          //   fullWidth
-          label=""
-          inputProps={{
-            maxLength: 1,
-            style: { textAlign: "center", fontSize: "1.5rem" }, // Apply center alignment
-          }}
-          value={state.resetData.verification_code[0]}
-          name="verification_code"
-          autoComplete="verification_code"
+           sx={{marginRight: '.2rem'}}
+           required
+           //   fullWidth
+           label=""
+           inputProps={{
+             maxLength: 1,
+             style: { textAlign: "center", fontSize: "1.5rem" }, // Apply center alignment
+            }}
+            value={state.resetData.verification_code[0]}
+            name="verification_code"
+            autoComplete="verification_code"
         />
         <TextField
           className="text-field"
           onChange={(e) =>
             state.changeHandlerForVerificationCode(e.target.value, 1)
           }
-          //   margin="normal"
+          // margin="normal"
+          sx={{marginRight: '.2rem'}}
           inputProps={{
             maxLength: 1,
             style: { textAlign: "center", fontSize: "1.5rem" }, // Apply center alignment
@@ -90,13 +91,14 @@ export default function VerificationCode() {
           value={state.resetData.verification_code[1]}
           name="verification_code"
           autoComplete="verification_code"
-        />
+          />
         <TextField
           className="text-field"
           onChange={(e) =>
             state.changeHandlerForVerificationCode(e.target.value, 2)
           }
           required
+          sx={{marginRight: '.2rem'}}
           inputProps={{
             maxLength: 1,
             style: { textAlign: "center", fontSize: "1.5rem" }, // Apply center alignment
@@ -105,12 +107,13 @@ export default function VerificationCode() {
           value={state.resetData.verification_code[2]}
           name="verification_code"
           autoComplete="verification_code"
-        />
+          />
         <TextField
           className="text-field"
           onChange={(e) =>
             state.changeHandlerForVerificationCode(e.target.value, 3)
           }
+          sx={{marginRight: '.2rem'}}
           inputProps={{
             maxLength: 1,
             style: { textAlign: "center", fontSize: "1.5rem" }, // Apply center alignment
@@ -120,11 +123,12 @@ export default function VerificationCode() {
           value={state.resetData.verification_code[3]}
           name="verification_code"
           autoComplete="verification_code"
-        />
+          />
         <TextField
           onChange={(e) =>
             state.changeHandlerForVerificationCode(e.target.value, 4)
           }
+          sx={{marginRight: '.2rem'}}
           inputProps={{
             maxLength: 1,
             style: { textAlign: "center", fontSize: "1.5rem" }, // Apply center alignment

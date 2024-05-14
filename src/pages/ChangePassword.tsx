@@ -14,7 +14,7 @@ import { GlobalNavigationContext } from "../contexts/GlobalNavigationContext";
 import { IoArrowBack } from "react-icons/io5";
 import FallingSpinner from "../components/LoadingSpinner";
 import { Alert } from "@mui/material";
-import { StyledSignIn } from "../styles/StyledSignIn";
+import { StyledSignIn } from "../styles/page-styles/StyledSignIn";
 
 const defaultTheme = createTheme();
 

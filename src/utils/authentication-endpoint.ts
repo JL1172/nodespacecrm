@@ -41,3 +41,4 @@ export const thirdStepPasswordReset = (reqBody: {
     .create({ headers: { Authorization: token } })
     .post(AuthUrls.resetPswrd, reqBody);
 };
+
