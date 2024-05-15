@@ -19,6 +19,8 @@ export type RegisterStateType = {
   generalRegistrationErr?: string;
   isRegisterSpinnerLoading?: boolean;
   isRedirectingSpinnerLoading?: boolean;
+  company_name?: string;
+  companyNameErr?: Record<string, string>;
 };
 export const registerInitialState: RegisterStateType = {
   email: "",
@@ -36,6 +38,8 @@ export const registerInitialState: RegisterStateType = {
   generalRegistrationErr: "",
   isRegisterSpinnerLoading: false,
   isRedirectingSpinnerLoading: false,
+  company_name: "",
+  companyNameErr: {},
 };
 
 export const useRegister = (
@@ -54,32 +58,68 @@ export const useRegister = (
   };
   const submitRegistrationData = async () => {
     const errReset: RegisterStateType = {};
-    for (const key in state) {
-      if (/Err/.test(key)) {
+    for (const key in data) {
+      if (/Err/.test(key) && key !== "generalRegistrationErr") {
         errReset[key] = {};
       } else if (key === "isRegisterSpinnerLoading") {
         errReset[key] = true;
       } else {
-        errReset[key] = state[key];
+        errReset[key] = data[key];
       }
     }
+    errReset["generalRegistrationErr"] = "";
     setData(errReset);
     try {
       const credsToSend: RegisterStateType = {};
-      for (const key in state) {
+      for (const key in data) {
         if (!/Err/.test(key) && !/Spinner/.test(key)) {
-          credsToSend[key] = state[key];
+          credsToSend[key] = data[key];
         }
       }
+      credsToSend.age = Number(credsToSend.age);
       const res = await signUp(credsToSend);
       console.log(res);
       //todo need to figure out success steps, redirecting, clearing local storage, setting email to localstorage
-    } catch (err) {
-      console.log(err);
+      //eslint-disable-next-line
+    } catch (err: any) {
+      if (
+        err?.response?.data?.message !== "Too Many Registration Attempts." &&
+        err?.response?.data?.message !== "An Unexpected Problem Occurred." &&
+        err?.response?.data?.message !==
+          "Username and Email Already Associated With A Different Account."
+      ) {
+        const {
+          email = {},
+          first_name = {},
+          last_name = {},
+          password = {},
+          username = {},
+          age = {},
+          company_name = {},
+        } = err.response.data.message;
+        setData((data) => ({
+          ...data,
+          emailErr: email,
+          firstNameErr: first_name,
+          lastNameErr: last_name,
+          passwordErr: password,
+          usernameErr: username,
+          ageErr: age,
+          companyNameErr: company_name,
+        }));
+      } else {
+        setData((data) => ({
+          ...data,
+          generalRegistrationErr:
+            err.response.data.message || "An Unexpected Problem Occurred.",
+        }));
+        setTimeout(() => {
+          setData((data) => ({ ...data, generalRegistrationErr: "" }));
+        }, 3000);
+      }
       //todo need to figure out error handling, individual and then general.
     } finally {
       setData((data) => ({ ...data, isRegisterSpinnerLoading: false }));
-      setTimeout(() => {}, 3000);
     }
   };
   return [data, changeRegisterData, submitRegistrationData];

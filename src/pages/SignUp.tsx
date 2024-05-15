@@ -14,6 +14,7 @@ import { GlobalNavigationContext } from "../contexts/GlobalNavigationContext";
 import { IoArrowBack, IoEyeOffSharp, IoEyeOutline } from "react-icons/io5";
 import { StyledSignUp } from "../styles/page-styles/StyledSignUp";
 import FallingSpinner from "../components/LoadingSpinner";
+import { Alert } from "@mui/material";
 
 const defaultTheme = createTheme();
 
@@ -22,11 +23,12 @@ export default function SignUp() {
   const { ...state } = React.useContext(GlobalNavigationContext);
   const { changeRegisterData, submitRegisterData, nav } = state;
   const {
-    isRedirectingSpinnerLoading,
     isRegisterSpinnerLoading,
     emailErr,
     passwordErr,
     firstNameErr,
+    companyNameErr,
+    company_name,
     lastNameErr,
     usernameErr,
     username,
@@ -39,12 +41,20 @@ export default function SignUp() {
     generalRegistrationErr,
   } = state.registerData;
   return (
-    //todo need to work on error handling 
+    //todo need to work on error handling
     <StyledSignUp>
       {isRegisterSpinnerLoading ? (
         <FallingSpinner />
       ) : (
         <ThemeProvider theme={defaultTheme}>
+          {generalRegistrationErr && (
+            <Alert
+              severity="error"
+              sx={{ position: "fixed", top: "0", width: "100%", zIndex: 2 }}
+            >
+              {generalRegistrationErr}
+            </Alert>
+          )}
           <IoArrowBack
             onClick={() => nav("/")}
             id="arrow-pointer"
@@ -59,7 +69,7 @@ export default function SignUp() {
           />
           <Container
             component="main"
-            maxWidth="xs"
+            id = "container"
             sx={{
               height: "90dvh",
               display: "flex",
@@ -102,6 +112,19 @@ export default function SignUp() {
                         changeRegisterData(e.target.name, e.target.value)
                       }
                     />
+                    {firstNameErr && Object.keys(firstNameErr).length > 0 && (
+                      <Alert
+                        severity="error"
+                        sx={{
+                          width: "100%",
+                          zIndex: 2,
+                        }}
+                      >
+                        {Object.values(firstNameErr).map((n, i) => (
+                          <span key={i} className="flex flex-col">{n}</span>
+                        ))}
+                      </Alert>
+                    )}
                   </Grid>
                   <Grid item xs={12} sm={6}>
                     <TextField
@@ -116,6 +139,19 @@ export default function SignUp() {
                       name="last_name"
                       autoComplete="family-name"
                     />
+                    {lastNameErr && Object.keys(lastNameErr).length > 0 && (
+                      <Alert
+                        severity="error"
+                        sx={{
+                          width: "100%",
+                          zIndex: 2,
+                        }}
+                      >
+                        {Object.values(lastNameErr).map((n, i) => (
+                          <span key={i} className="flex flex-col">{n}</span>
+                        ))}
+                      </Alert>
+                    )}
                   </Grid>
                   <Grid item xs={12}>
                     <TextField
@@ -130,6 +166,19 @@ export default function SignUp() {
                       name="email"
                       autoComplete="email"
                     />
+                    {emailErr && Object.keys(emailErr).length > 0 && (
+                      <Alert
+                        severity="error"
+                        sx={{
+                          width: "100%",
+                          zIndex: 2,
+                        }}
+                      >
+                        {Object.values(emailErr).map((n, i) => (
+                          <span key={i} className="flex flex-col">{n}</span>
+                        ))}
+                      </Alert>
+                    )}
                   </Grid>
                   <Grid item xs={12}>
                     <TextField
@@ -144,6 +193,60 @@ export default function SignUp() {
                       name="username"
                       autoComplete="username"
                     />
+                    {usernameErr && Object.keys(usernameErr).length > 0 && (
+                      <Alert
+                        severity="error"
+                        sx={{
+                          width: "100%",
+                          zIndex: 2,
+                        }}
+                      >
+                        {Object.values(usernameErr).map((n, i) => (
+                          <span key={i} className="flex flex-col">{n}</span>
+                        ))}
+                      </Alert>
+                    )}
+                  </Grid>
+                  <Grid item xs={12} sx={{ position: "relative" }}>
+                    <div className="relative">
+                      <TextField
+                        required
+                        fullWidth
+                        onChange={(e) =>
+                          changeRegisterData(e.target.name, e.target.value)
+                        }
+                        value={password}
+                        name="password"
+                        label="Password"
+                        type={passwordVisible === true ? "text" : "password"}
+                        id="password"
+                        autoComplete="new-password"
+                      />
+                      {passwordVisible === true ? (
+                        <IoEyeOutline
+                          id="password-visibility"
+                          onClick={() => setPasswordVisible(!passwordVisible)}
+                        />
+                      ) : (
+                        <IoEyeOffSharp
+                          id="password-visibility"
+                          onClick={() => setPasswordVisible(!passwordVisible)}
+                        />
+                      )}
+                    </div>
+                    {passwordErr && Object.keys(passwordErr).length > 0 && (
+                      <Alert
+                        severity="error"
+                        sx={{
+                          width: "100%",
+                          zIndex: 2,
+                        }}
+                      >
+                        {Object.values(passwordErr).map((n, i) => (
+                          <span key={i} className="flex flex-col">{n}</span>
+                        ))}
+                      </Alert>
+                    )}
                   </Grid>
                   <Grid item xs={12}>
                     <TextField
@@ -159,32 +262,48 @@ export default function SignUp() {
                       name="age"
                       autoComplete="age"
                     />
+                    {ageErr && Object.keys(ageErr).length > 0 && (
+                      <Alert
+                        severity="error"
+                        sx={{
+                          width: "100%",
+                          zIndex: 2,
+                        }}
+                      >
+                        {Object.values(ageErr).map((n, i) => (
+                          <span key={i} className="flex flex-col">{n}</span>
+                        ))}
+                      </Alert>
+                    )}
                   </Grid>
-                  <Grid item xs={12} sx={{ position: "relative" }}>
+                  <Grid item xs={12}>
                     <TextField
                       required
                       fullWidth
+                      id="company_name"
                       onChange={(e) =>
                         changeRegisterData(e.target.name, e.target.value)
                       }
-                      value={password}
-                      name="password"
-                      label="Password"
-                      type={passwordVisible === true ? "text" : "password"}
-                      id="password"
-                      autoComplete="new-password"
+                      value={company_name}
+                      type="text"
+                      label="Company Name"
+                      name="company_name"
+                      autoComplete="company_name"
                     />
-                    {passwordVisible === true ? (
-                      <IoEyeOutline
-                        id="password-visibility"
-                        onClick={() => setPasswordVisible(!passwordVisible)}
-                      />
-                    ) : (
-                      <IoEyeOffSharp
-                        id="password-visibility"
-                        onClick={() => setPasswordVisible(!passwordVisible)}
-                      />
-                    )}
+                    {companyNameErr &&
+                      Object.keys(companyNameErr).length > 0 && (
+                        <Alert
+                          severity="error"
+                          sx={{
+                            width: "100%",
+                            zIndex: 2,
+                          }}
+                        >
+                          {Object.values(companyNameErr).map((n, i) => (
+                            <span key={i} className="flex flex-col">{n}</span>
+                          ))}
+                        </Alert>
+                      )}
                   </Grid>
                 </Grid>
                 <Button
