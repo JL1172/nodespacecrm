@@ -21,6 +21,7 @@ export type RegisterStateType = {
   isRedirectingSpinnerLoading?: boolean;
   company_name?: string;
   companyNameErr?: Record<string, string>;
+  redirectSuccessMessage?: string;
 };
 export const registerInitialState: RegisterStateType = {
   email: "",
@@ -40,10 +41,11 @@ export const registerInitialState: RegisterStateType = {
   isRedirectingSpinnerLoading: false,
   company_name: "",
   companyNameErr: {},
+  redirectSuccessMessage: "",
 };
 
 export const useRegister = (
-  state: RegisterStateType
+  state: RegisterStateType, nav: (address:string) => void,
 ): [
   RegisterStateType,
   typeof changeRegisterData,
@@ -78,7 +80,13 @@ export const useRegister = (
       }
       credsToSend.age = Number(credsToSend.age);
       const res = await signUp(credsToSend);
-      console.log(res);
+      window.localStorage.clear();
+      window.localStorage.setItem('email', data.email + "");
+      setData(data => ({...data, redirectSuccessMessage: res.data.message}))
+      nav('/verify-email')
+      setTimeout(() => {
+        setData(registerInitialState)
+      }, (5000));
       //todo need to figure out success steps, redirecting, clearing local storage, setting email to localstorage
       //eslint-disable-next-line
     } catch (err: any) {

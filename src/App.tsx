@@ -18,7 +18,7 @@ import { registerInitialState, useRegister } from "./hooks/useRegister";
 export default function App() {
   const nav = useNavigate();
   const [registerData, changeRegisterData, submitRegisterData] =
-    useRegister(registerInitialState);
+    useRegister(registerInitialState, nav);
   const [
     loginData,
     change,
