@@ -59,6 +59,15 @@ export default function VerifyEmail() {
           {state.registerData.redirectSuccessMessage}
         </Alert>
       )}
+      {state.verifyEmailData.successMessageForEmailVerification && (
+        <Alert
+          variant="filled"
+          style={{ top: "0", position: "fixed", width: "100%" }}
+          severity="success"
+        >
+          {state.verifyEmailData.successMessageForEmailVerification}
+        </Alert>
+      )}
       <Avatar sx={{ bgcolor: "secondary.main" }}>
         <LockOutlinedIcon />
       </Avatar>
@@ -154,7 +163,7 @@ export default function VerifyEmail() {
         />
       </div>
       {state.verifyEmailData.emailErrorMessage && (
-        <Grid item xs={12} sx ={{width: "20rem", marginBottom: "2rem"}}>
+        <Grid item xs={12} sx={{ width: "20rem", marginBottom: "2rem" }}>
           <TextField
             required
             fullWidth
@@ -167,8 +176,8 @@ export default function VerifyEmail() {
           />
         </Grid>
       )}
-      {state.verifyEmailData.generateNewCodeStatus &&
-      !state.verifyEmailData.newCodeSuccessMessage ? (
+      {state.verifyEmailData.loadingSpinner === true &&
+      state.verifyEmailData.successfullySentSpinner === false ? (
         <LoadingButton
           loading
           loadingPosition="start"
@@ -188,33 +197,36 @@ export default function VerifyEmail() {
         >
           Loading...
         </LoadingButton>
-      ) : !state.verifyEmailData.generateNewCodeStatus &&
-        state.verifyEmailData.newCodeSuccessMessage ? (
+      ) : state.verifyEmailData.loadingSpinner === false &&
+        state.verifyEmailData.successfullySentSpinner === true ? (
         <Button sx={buttonSx} variant="contained">
           <CheckIcon sx={{ marginRight: "1rem" }} />
           Successfully Sent
         </Button>
       ) : (
-        <Button
-          onClick={() => state.generateNewVerificationCode()}
-          sx={{
-            bgcolor: "white",
-            color: "black",
-            fontFamily: "inherit",
-            paddingLeft: "2rem",
-            paddingRight: "2rem",
-            height: "3rem",
-            width: "20rem",
-            "&:hover": {
-              bgcolor: "transparent",
-              color: "white",
-            },
-          }}
-          id="button"
-          variant="contained"
-        >
-          Send New Verification Code
-        </Button>
+        state.verifyEmailData.loadingSpinner === false &&
+        state.verifyEmailData.successfullySentSpinner === false && (
+          <Button
+            onClick={async () => await state.generateNewVerificationCode()}
+            sx={{
+              bgcolor: "white",
+              color: "black",
+              fontFamily: "inherit",
+              paddingLeft: "2rem",
+              paddingRight: "2rem",
+              height: "3rem",
+              width: "20rem",
+              "&:hover": {
+                bgcolor: "transparent",
+                color: "white",
+              },
+            }}
+            id="button"
+            variant="contained"
+          >
+            Send New Verification Code
+          </Button>
+        )
       )}
     </StyledVerificationCodePage>
   );

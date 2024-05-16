@@ -7,11 +7,12 @@ import {
 export type VerifyEmailBody = {
   email: string;
   verification_code: string[];
-  verifyEmailSpinner: boolean;
   generalErrorForVerifyEmail: string;
+  verifyEmailSpinner: boolean;
+  loadingSpinner: boolean;
   emailErrorMessage: boolean;
-  generateNewCodeStatus: boolean;
-  newCodeSuccessMessage: boolean;
+  successfullySentSpinner: boolean;
+  successMessageForEmailVerification: string;
 };
 
 export const initialStateForVerifyingEmail: VerifyEmailBody = {
@@ -19,9 +20,10 @@ export const initialStateForVerifyingEmail: VerifyEmailBody = {
   verification_code: ["", "", "", "", "", ""],
   verifyEmailSpinner: false,
   generalErrorForVerifyEmail: "",
-  generateNewCodeStatus: false,
+  loadingSpinner: false,
+  successfullySentSpinner: false,
   emailErrorMessage: false,
-  newCodeSuccessMessage: false,
+  successMessageForEmailVerification: "",
 };
 export const useVerifyEmail = (
   state: VerifyEmailBody,
@@ -44,14 +46,20 @@ export const useVerifyEmail = (
     }));
   };
   const generateNewVerificationCode = async () => {
+    setData((data) => ({
+      ...data,
+      loadingSpinner: true,
+      generalErrorForVerifyEmail: "",
+    }));
     try {
-      setData(initialStateForVerifyingEmail);
-      setData((data) => ({ ...data, generateNewCodeStatus: true }));
-      const email = window.localStorage.getItem("email") + "" || data.email;
+      const email = window.localStorage.getItem("email") || data.email;
       if (!email) {
-        setData(initialStateForVerifyingEmail);
+        console.log(email);
         setData((data) => ({
           ...data,
+          verification_code: new Array(6).fill(""),
+          successfullySentSpinner: false,
+          loadingSpinner: false,
           generalErrorForVerifyEmail:
             "An Unexpected Problem Occurred, Enter Email Address To Continue.",
           emailErrorMessage: true,
@@ -62,43 +70,68 @@ export const useVerifyEmail = (
             generalErrorForVerifyEmail: "",
           }));
         }, 4000);
+      } else {
+        await generateVerifyEmailCode({ email: email + "" });
+        window.localStorage.clear();
+        window.localStorage.setItem("email", email);
+        setData((data) => ({
+          ...data,
+          loadingSpinner: false,
+          emailErrorMessage: false,
+          successfullySentSpinner: true,
+        }));
+        setTimeout(() => {
+          setData((data) => ({
+            ...data,
+            generalErrorForVerifyEmail: "",
+          }));
+        }, 5000);
       }
-      const res = await generateVerifyEmailCode({ email: email + "" });
-      setData((data) => ({
-        ...data,
-        generateNewCodeStatus: false,
-        newCodeSuccessMessage: true,
-      }));
-      setTimeout(() => {
-        setData(initialStateForVerifyingEmail);
-      }, 3000);
-      console.log(res);
       //eslint-disable-next-line
     } catch (err: any) {
-      if (typeof err?.response?.data?.message === "string") {
+      if (
+        err?.response?.data?.message?.response ===
+        "Account Already Verified, Proceed To Login."
+      ) {
         setData((data) => ({
           ...data,
-          generalErrorForVerifyEmail: err.response.data.message,
+          successMessageForEmailVerification:
+            err?.response?.data?.message?.response + " Redirecting soon.",
         }));
+        setTimeout(() => {
+          setData(initialStateForVerifyingEmail);
+          window.localStorage.clear();
+          nav("/sign-in");
+        }, 3000);
       } else {
+        if (typeof err?.response?.data?.message === "string") {
+          setData((data) => ({
+            ...data,
+            generalErrorForVerifyEmail: err.response.data.message,
+          }));
+        } else {
+          setData((data) => ({
+            ...data,
+            generalErrorForVerifyEmail: Object.values(
+              err.response.data.message.email
+            ).join(""),
+          }));
+        }
+        setTimeout(() => {
+          setData((data) => ({ ...data, generalErrorForVerifyEmail: "" }));
+        }, 3000);
+      }
+    } finally {
+      setTimeout(() => {
         setData((data) => ({
           ...data,
-          generalErrorForVerifyEmail: Object.values(
-            err.response.data.message.email
-          ).join(""),
+          loadingSpinner: false,
+          successfullySentSpinner: false,
         }));
-      }
-      setTimeout(() => {
-        setData((data) => ({ ...data, generalErrorForVerifyEmail: "" }));
-      }, 3000);
-    } finally {
-      setData((data) => ({
-        ...data,
-        generateNewCodeStatus: false,
-        newCodeSuccessMessage: false,
-      }));
+      }, 5000);
     }
   };
+
   const handleChangeForEmail = (value: string) => {
     setData((data) => ({ ...data, email: value }));
   };
@@ -111,7 +144,7 @@ export const useVerifyEmail = (
   const submitVerificationCode = async () => {
     try {
       setData((data) => ({ ...data, verifyEmailSpinner: true }));
-      const email = window.localStorage.getItem("email");
+      const email = window.localStorage.getItem("email") || data.email;
       if (!email) {
         setData(initialStateForVerifyingEmail);
         window.localStorage.clear();
@@ -127,24 +160,48 @@ export const useVerifyEmail = (
             generalErrorForVerifyEmail: "",
           }));
         }, 4000);
+      } else {
+        const reqBody = {
+          email: email + "",
+          verification_code: data.verification_code.join(""),
+        };
+        const res = await verifyEmailCode(reqBody);
+        setData((data) => ({
+          ...data,
+          successMessageForEmailVerification: res.data + " Redirecting soon.",
+        }));
+        setTimeout(() => {
+          setData(initialStateForVerifyingEmail);
+          window.localStorage.clear();
+          nav("/sign-in");
+        }, 3000);
       }
-      const reqBody = {
-        email: email + "",
-        verification_code: data.verification_code.join(""),
-      };
-      const res = await verifyEmailCode(reqBody);
-      console.log(res);
       //eslint-disable-next-line
     } catch (err: any) {
-      console.log(err);
-      setData((data) => ({
-        ...data,
-        generalErrorForVerifyEmail: err?.response?.data?.message,
-        verification_code: new Array(6).fill(""),
-      }));
-      setTimeout(() => {
-        setData((data) => ({ ...data, generalErrorForVerifyEmail: "" }));
-      }, 3000);
+      if (
+        err?.response?.data?.message?.response ===
+        "Account Already Verified. Proceed To Sign In."
+      ) {
+        setData((data) => ({
+          ...data,
+          successMessageForEmailVerification:
+            err?.response?.data?.message.response + " Redirecting soon.",
+        }));
+        setTimeout(() => {
+          setData(initialStateForVerifyingEmail);
+          window.localStorage.clear();
+          nav("/sign-in");
+        }, 3000);
+      } else {
+        setData((data) => ({
+          ...data,
+          generalErrorForVerifyEmail: err?.response?.data?.message,
+          verification_code: new Array(6).fill(""),
+        }));
+        setTimeout(() => {
+          setData((data) => ({ ...data, generalErrorForVerifyEmail: "" }));
+        }, 3000);
+      }
     } finally {
       setData((data) => ({ ...data, verifyEmailSpinner: false }));
     }

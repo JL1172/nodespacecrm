@@ -26,7 +26,7 @@ type GlobalNaviationContextType = {
   changeVerifyEmailData: (value: string, idx: number) => void;
   verifyEmailData: VerifyEmailBody;
   submitVerificationCode: () => void;
-  generateNewVerificationCode: () => void;
+  generateNewVerificationCode: () => Promise<void>;
   handleChangeForEmail: (email: string) => void;
   submitEmail: () => Promise<void>;
 };
