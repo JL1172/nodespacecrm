@@ -10,6 +10,8 @@ export type AuthUrlsType = {
   resetPswrd: string;
   validateToken: string;
   logout: string;
+  generateEmailVerificationCode: string;
+  verifyEmail: string;
 };
 
 export const AuthUrls: AuthUrlsType = {
@@ -20,4 +22,6 @@ export const AuthUrls: AuthUrlsType = {
   resetPswrd: AUTH_BASE + "/reset-password",
   validateToken: AUTH_BASE + "/restricted",
   logout: AUTH_BASE + "/logout",
+  generateEmailVerificationCode: AUTH_BASE + "/generate-verification-code",
+  verifyEmail: AUTH_BASE + "/verify-email",
 };

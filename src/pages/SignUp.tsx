@@ -41,7 +41,6 @@ export default function SignUp() {
     generalRegistrationErr,
   } = state.registerData;
   return (
-    //todo need to work on error handling
     <StyledSignUp>
       {isRegisterSpinnerLoading ? (
         <FallingSpinner />

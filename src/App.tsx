@@ -22,10 +22,14 @@ import VerifyEmail from "./pages/VerifyEmail";
 
 export default function App() {
   const nav = useNavigate();
-  const [verifyEmailData, changeVerifyEmailData] = useVerifyEmail(
-    initialStateForVerifyingEmail,
-    nav
-  );
+  const [
+    verifyEmailData,
+    changeVerifyEmailData,
+    submitVerificationCode,
+    generateNewVerificationCode,
+    handleChangeForEmail,
+    submitEmail,
+  ] = useVerifyEmail(initialStateForVerifyingEmail, nav);
   const [registerData, changeRegisterData, submitRegisterData] = useRegister(
     registerInitialState,
     nav
@@ -71,6 +75,10 @@ export default function App() {
         submitRegisterData,
         changeVerifyEmailData,
         verifyEmailData,
+        submitVerificationCode,
+        generateNewVerificationCode,
+        handleChangeForEmail,
+        submitEmail,
       }}
     >
       <Routes>

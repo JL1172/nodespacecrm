@@ -13,10 +13,10 @@ type GlobalNaviationContextType = {
   globalError: string;
   setLandingPageError: (message: string) => void;
   landingPageError: string;
-  resetData: ChangePasswordBody,
+  resetData: ChangePasswordBody;
   resetChange: (name: string, value: string | boolean) => void;
   firstStepOfPswrdReset: () => void;
-  changeHandlerForVerificationCode: (name:string, idx: number) => void;
+  changeHandlerForVerificationCode: (name: string, idx: number) => void;
   secondStepOfPasswordResetProcess: () => void;
   regenerateVerificationCode: () => void;
   thirdStepOfPasswordResetProcess: () => void;
@@ -25,6 +25,10 @@ type GlobalNaviationContextType = {
   submitRegisterData: () => void;
   changeVerifyEmailData: (value: string, idx: number) => void;
   verifyEmailData: VerifyEmailBody;
+  submitVerificationCode: () => void;
+  generateNewVerificationCode: () => void;
+  handleChangeForEmail: (email: string) => void;
+  submitEmail: () => Promise<void>;
 };
 
 export const GlobalNavigationContext = createContext<

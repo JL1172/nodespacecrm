@@ -32,6 +32,7 @@ export const secondStepPasswordReset = (reqBody: {
 }) => {
   return axios.post(AuthUrls.verifyCode, reqBody);
 };
+
 export const thirdStepPasswordReset = (reqBody: {
   password: string;
   confirmedPassword: string;
@@ -42,3 +43,13 @@ export const thirdStepPasswordReset = (reqBody: {
     .post(AuthUrls.resetPswrd, reqBody);
 };
 
+export const generateVerifyEmailCode = (reqBody: { email: string }) => {
+  return axios.post(AuthUrls.generateEmailVerificationCode, reqBody);
+};
+
+export const verifyEmailCode = (reqBody: {
+  email: string;
+  verification_code: string;
+}) => {
+  return axios.post(AuthUrls.verifyEmail, reqBody);
+};
