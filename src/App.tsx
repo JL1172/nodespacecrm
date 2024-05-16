@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { GlobalNavigationContext } from "./contexts/GlobalNavigationContext";
 import SignUp from "./pages/SignUp";
 import { initialState, useLogin } from "./hooks/useLogin";
-import ProtectRoute from "./components/ProtectedRoute";
+import ProtectRoute from "./protected-components/ProtectedRoute";
 import ChangePassword from "./pages/ChangePassword";
 import {
   initialResetPassword,

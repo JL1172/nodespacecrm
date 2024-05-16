@@ -21,6 +21,13 @@ import { RiLogoutBoxLine } from "react-icons/ri";
 import { initialStateForDashBoard, useDashBoard } from "../hooks/useDashBoard";
 import { useNavigate } from "react-router-dom";
 
+//todo need to do the following
+/**
+ * wire up projects module
+ * wire up customers module
+ * wire up messaging module
+ * then on the dashboard, just put most recent todos
+ */
 //eslint-disable-next-line
 function Copyright(props: any) {
   return (

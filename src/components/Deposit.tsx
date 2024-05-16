@@ -7,6 +7,7 @@ function preventDefault(event: React.MouseEvent) {
   event.preventDefault();
 }
 
+//todo need to wire up revenue for month with backend endpoint
 export default function Deposits() {
   return (
     <React.Fragment>

@@ -1,7 +1,7 @@
 import { useContext, useEffect, useState } from "react";
 import { validateToken } from "../utils/authentication-endpoint";
 import Dashboard from "../pages/Dashboard";
-import FallingSpinner from "./LoadingSpinner";
+import FallingSpinner from "../components/LoadingSpinner";
 import { useNavigate } from "react-router-dom";
 import { GlobalNavigationContext } from "../contexts/GlobalNavigationContext";
 
