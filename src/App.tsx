@@ -14,11 +14,22 @@ import {
 import VerificationCode from "./pages/VerificationCode";
 import ResetPassword from "./pages/ResetPassword";
 import { registerInitialState, useRegister } from "./hooks/useRegister";
+import {
+  initialStateForVerifyingEmail,
+  useVerifyEmail,
+} from "./hooks/useVerifyEmail";
+import VerifyEmail from "./pages/VerifyEmail";
 
 export default function App() {
   const nav = useNavigate();
-  const [registerData, changeRegisterData, submitRegisterData] =
-    useRegister(registerInitialState, nav);
+  const [verifyEmailData, changeVerifyEmailData] = useVerifyEmail(
+    initialStateForVerifyingEmail,
+    nav
+  );
+  const [registerData, changeRegisterData, submitRegisterData] = useRegister(
+    registerInitialState,
+    nav
+  );
   const [
     loginData,
     change,
@@ -58,6 +69,8 @@ export default function App() {
         registerData,
         changeRegisterData,
         submitRegisterData,
+        changeVerifyEmailData,
+        verifyEmailData,
       }}
     >
       <Routes>
@@ -67,6 +80,7 @@ export default function App() {
         <Route path="/change-password" element={<ChangePassword />} />
         <Route path="/verify-code" element={<VerificationCode />} />
         <Route path="/reset-password" element={<ResetPassword />} />
+        <Route path="/verify-email" element={<VerifyEmail />} />
         <Route path="/protected" element={<ProtectRoute />} />
       </Routes>
     </GlobalNavigationContext.Provider>

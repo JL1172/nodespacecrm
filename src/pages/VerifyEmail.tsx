@@ -21,33 +21,33 @@ const buttonSx = {
   },
 };
 
-export default function VerificationCode() {
+export default function VerifyEmail() {
   const { ...state } = useContext(GlobalNavigationContext);
   useEffect(() => {
-    const length = state.resetData.verification_code.filter((n) => n).length;
+    const length = state.verifyEmailData.verification_code.filter((n) => n).length;
     if (length === 6) {
-      state.secondStepOfPasswordResetProcess();
+     alert('done')
     }
-  }, [state.resetData.verification_code]);//eslint-disable-line
-  return state.resetData.spinnerOn ? (
+  }, [state.verifyEmailData.verification_code]);//eslint-disable-line
+  return state.verifyEmailData.verifyEmailSpinner ? (
     <FallingSpinner />
   ) : (
     <StyledVerificationCodePage>
-      {state.resetData.secondStepGeneralError && (
+      {state.verifyEmailData.generalErrorForVerifyEmail && (
         <Alert
           severity="error"
           sx={{ position: "fixed", top: "0", width: "100%", zIndex: 2 }}
         >
-          {state.resetData.secondStepGeneralError}
+          {state.verifyEmailData.generalErrorForVerifyEmail}
         </Alert>
       )}
-      {state.resetData.firstStepSuccessMessage && (
+      {state.registerData.redirectSuccessMessage && (
         <Alert
           variant="filled"
           style={{ top: "0", position: "fixed", width: "100%" }}
           severity="success"
         >
-          {state.resetData.firstStepSuccessMessage}
+          {state.registerData.redirectSuccessMessage}
         </Alert>
       )}
       <Avatar sx={{ bgcolor: "secondary.main" }}>
@@ -61,7 +61,7 @@ export default function VerificationCode() {
           className="text-field"
           //   input
           onChange={(e) =>
-            state.changeHandlerForVerificationCode(e.target.value, 0)
+            state.changeVerifyEmailData(e.target.value, 0)
           }
            sx={{marginRight: '.2rem'}}
            required
@@ -71,14 +71,14 @@ export default function VerificationCode() {
              maxLength: 1,
              style: { textAlign: "center", fontSize: "1.5rem" }, // Apply center alignment
             }}
-            value={state.resetData.verification_code[0]}
+            value={state.verifyEmailData.verification_code[0]}
             name="verification_code"
             autoComplete="verification_code"
         />
         <TextField
           className="text-field"
           onChange={(e) =>
-            state.changeHandlerForVerificationCode(e.target.value, 1)
+            state.changeVerifyEmailData(e.target.value, 1)
           }
           // margin="normal"
           sx={{marginRight: '.2rem'}}
@@ -88,14 +88,14 @@ export default function VerificationCode() {
           }}
           required
           label=""
-          value={state.resetData.verification_code[1]}
+          value={state.verifyEmailData.verification_code[1]}
           name="verification_code"
           autoComplete="verification_code"
           />
         <TextField
           className="text-field"
           onChange={(e) =>
-            state.changeHandlerForVerificationCode(e.target.value, 2)
+            state.changeVerifyEmailData(e.target.value, 2)
           }
           required
           sx={{marginRight: '.2rem'}}
@@ -104,14 +104,14 @@ export default function VerificationCode() {
             style: { textAlign: "center", fontSize: "1.5rem" }, // Apply center alignment
           }}
           label=""
-          value={state.resetData.verification_code[2]}
+          value={state.verifyEmailData.verification_code[2]}
           name="verification_code"
           autoComplete="verification_code"
           />
         <TextField
           className="text-field"
           onChange={(e) =>
-            state.changeHandlerForVerificationCode(e.target.value, 3)
+            state.changeVerifyEmailData(e.target.value, 3)
           }
           sx={{marginRight: '.2rem'}}
           inputProps={{
@@ -120,13 +120,13 @@ export default function VerificationCode() {
           }}
           required
           label=""
-          value={state.resetData.verification_code[3]}
+          value={state.verifyEmailData.verification_code[3]}
           name="verification_code"
           autoComplete="verification_code"
           />
         <TextField
           onChange={(e) =>
-            state.changeHandlerForVerificationCode(e.target.value, 4)
+            state.changeVerifyEmailData(e.target.value, 4)
           }
           sx={{marginRight: '.2rem'}}
           inputProps={{
@@ -137,12 +137,12 @@ export default function VerificationCode() {
           id="verification-code"
           className="text-field"
           label=""
-          value={state.resetData.verification_code[4]}
+          value={state.verifyEmailData.verification_code[4]}
           autoComplete="verification_code"
         />
         <TextField
           onChange={(e) =>
-            state.changeHandlerForVerificationCode(e.target.value, 5)
+            state.changeVerifyEmailData(e.target.value, 5)
           }
           inputProps={{
             maxLength: 1,
@@ -151,12 +151,12 @@ export default function VerificationCode() {
           required
           className="text-field"
           label=""
-          value={state.resetData.verification_code[5]}
+          value={state.verifyEmailData.verification_code[5]}
           name="verification_code"
           autoComplete="verification_code"
         />
       </div>
-      {state.resetData.loading && !state.resetData.firstStepSuccessMessage ? (
+      {state.verifyEmailData.generateNewCodeStatus && !state.verifyEmailData.newCodeSuccessMessage ? (
         <LoadingButton
           loading
           loadingPosition="start"
@@ -176,16 +176,15 @@ export default function VerificationCode() {
         >
           Loading...
         </LoadingButton>
-      ) : !state.resetData.loading &&
-        state.resetData.loading2 &&
-        state.resetData.firstStepSuccessMessage ? (
+      ) : !state.verifyEmailData.generateNewCodeStatus &&
+        state.verifyEmailData.newCodeSuccessMessage  ? (
         <Button sx={buttonSx} variant="contained">
           <CheckIcon sx={{ marginRight: "1rem" }} />
           Successfully Sent
         </Button>
       ) : (
         <Button
-          onClick={() => state.regenerateVerificationCode()}
+          onClick={() => console.log('todo')} //todo send new verification code
           sx={{
             bgcolor: "white",
             color: "black",

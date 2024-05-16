@@ -2,6 +2,7 @@ import { createContext } from "react";
 import { LoginStateType } from "../hooks/useLogin";
 import { ChangePasswordBody } from "../hooks/useResetPassword";
 import { RegisterStateType } from "../hooks/useRegister";
+import { VerifyEmailBody } from "../hooks/useVerifyEmail";
 
 type GlobalNaviationContextType = {
   nav: (address: string) => void;
@@ -22,6 +23,8 @@ type GlobalNaviationContextType = {
   registerData: RegisterStateType;
   changeRegisterData: (name: string, value: string | boolean | number) => void;
   submitRegisterData: () => void;
+  changeVerifyEmailData: (value: string, idx: number) => void;
+  verifyEmailData: VerifyEmailBody;
 };
 
 export const GlobalNavigationContext = createContext<

@@ -45,7 +45,8 @@ export const registerInitialState: RegisterStateType = {
 };
 
 export const useRegister = (
-  state: RegisterStateType, nav: (address:string) => void,
+  state: RegisterStateType,
+  nav: (address: string) => void
 ): [
   RegisterStateType,
   typeof changeRegisterData,
@@ -74,28 +75,26 @@ export const useRegister = (
     try {
       const credsToSend: RegisterStateType = {};
       for (const key in data) {
-        if (!/Err/.test(key) && !/Spinner/.test(key)) {
+        if (!/Err/.test(key) && !/Spinner/.test(key) && !/redirectSuccessMessage/.test(key)) {
           credsToSend[key] = data[key];
         }
       }
       credsToSend.age = Number(credsToSend.age);
       const res = await signUp(credsToSend);
       window.localStorage.clear();
-      window.localStorage.setItem('email', data.email + "");
-      setData(data => ({...data, redirectSuccessMessage: res.data.message}))
-      nav('/verify-email')
+      window.localStorage.setItem("email", data.email + "");
+      console.log(res);
+      setData((data) => ({
+        ...data,
+        redirectSuccessMessage: res.data,
+      }));
+      nav("/verify-email");
       setTimeout(() => {
-        setData(registerInitialState)
-      }, (5000));
-      //todo need to figure out success steps, redirecting, clearing local storage, setting email to localstorage
+        setData(registerInitialState);
+      }, 5000);
       //eslint-disable-next-line
     } catch (err: any) {
-      if (
-        err?.response?.data?.message !== "Too Many Registration Attempts." &&
-        err?.response?.data?.message !== "An Unexpected Problem Occurred." &&
-        err?.response?.data?.message !==
-          "Username and Email Already Associated With A Different Account."
-      ) {
+      if (typeof err?.response?.data?.message !== "string") {
         const {
           email = {},
           first_name = {},
@@ -105,16 +104,37 @@ export const useRegister = (
           age = {},
           company_name = {},
         } = err.response.data.message;
-        setData((data) => ({
-          ...data,
-          emailErr: email,
-          firstNameErr: first_name,
-          lastNameErr: last_name,
-          passwordErr: password,
-          usernameErr: username,
-          ageErr: age,
-          companyNameErr: company_name,
-        }));
+        if (
+          Object.keys(err?.response?.data?.message).filter(
+            (n) =>
+              n === "email" ||
+              n === "first_name" ||
+              n === "last_name" ||
+              n === "password" ||
+              n === "username" ||
+              n === "age" ||
+              n === "company_name"
+          ).length === 0
+        ) {
+          setData((data) => ({
+            ...data,
+            generalRegistrationErr: "An Unexpected Problem Occurred.",
+          }));
+          setTimeout(() => {
+            setData((data) => ({ ...data, generalRegistrationErr: "" }));
+          }, 3000);
+        } else {
+          setData((data) => ({
+            ...data,
+            emailErr: email,
+            firstNameErr: first_name,
+            lastNameErr: last_name,
+            passwordErr: password,
+            usernameErr: username,
+            ageErr: age,
+            companyNameErr: company_name,
+          }));
+        }
       } else {
         setData((data) => ({
           ...data,
@@ -125,7 +145,6 @@ export const useRegister = (
           setData((data) => ({ ...data, generalRegistrationErr: "" }));
         }, 3000);
       }
-      //todo need to figure out error handling, individual and then general.
     } finally {
       setData((data) => ({ ...data, isRegisterSpinnerLoading: false }));
     }

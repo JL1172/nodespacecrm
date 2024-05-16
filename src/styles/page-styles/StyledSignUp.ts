@@ -6,7 +6,7 @@ height: fit-content;
 display: flex;
 align-items: center;
 #container {
-    width: 75%;
+    width: 40rem;
     margin-top: 4rem;
     margin-bottom: 4rem;
     min-height: 80vh;
@@ -19,6 +19,11 @@ align-items: center;
     width: 1.2rem;
     height: 1.2rem;
     cursor: pointer;
+}
+@media screen and (max-width: 1100px) {
+    #container {
+        width: 75%;
+    }
 }
 @media screen and (max-width: 600px) {
     #container {
