@@ -19,6 +19,7 @@ import {
   useVerifyEmail,
 } from "./hooks/useVerifyEmail";
 import VerifyEmail from "./pages/VerifyEmail";
+import NotFound from "./pages/NotFound";
 
 export default function App() {
   const nav = useNavigate();
@@ -90,6 +91,7 @@ export default function App() {
         <Route path="/reset-password" element={<ResetPassword />} />
         <Route path="/verify-email" element={<VerifyEmail />} />
         <Route path="/protected" element={<ProtectRoute />} />
+        <Route path = "/*" element = {<NotFound/>}/>
       </Routes>
     </GlobalNavigationContext.Provider>
   );

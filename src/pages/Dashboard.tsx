@@ -23,8 +23,8 @@ import { useNavigate } from "react-router-dom";
 
 //todo need to do the following
 /**
- * wire up projects module
  * wire up customers module
+ * wire up projects module
  * wire up messaging module
  * then on the dashboard, just put most recent todos
  */
