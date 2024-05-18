@@ -36,7 +36,7 @@ export default function ResetPassword() {
           style={{ top: "0", position: "fixed", width: "100%", zIndex: 2 }}
           severity="success"
         >
-          {state.resetData.secondStepSuccess}
+          {state.resetData.secondStepSuccess} Redirecting Soon.
         </Alert>
       )}
       <ThemeProvider theme={defaultTheme}>

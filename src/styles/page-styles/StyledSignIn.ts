@@ -1,7 +1,14 @@
 import styled from "styled-components";
 
 export const StyledSignIn = styled.div`
-
+#password-visibility {
+    position: absolute;
+    right: 1rem;
+    top: 35%;
+    width: 1.2rem;
+    height: 1.2rem;
+    cursor: pointer;
+}
 .box {
     width: 40%;
 }

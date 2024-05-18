@@ -11,7 +11,7 @@ import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { GlobalNavigationContext } from "../contexts/GlobalNavigationContext";
-import { IoArrowBack } from "react-icons/io5";
+import { IoArrowBack, IoEyeOffSharp, IoEyeOutline } from "react-icons/io5";
 import FallingSpinner from "../components/LoadingSpinner";
 import { Alert } from "@mui/material";
 import { StyledSignIn } from "../styles/page-styles/StyledSignIn";
@@ -20,6 +20,7 @@ const defaultTheme = createTheme();
 
 export default function SignIn() {
   const { ...state } = React.useContext(GlobalNavigationContext);
+  const [passwordVisible, setPasswordVisible] = React.useState(false);
   return (
     <StyledSignIn>
       {state.globalError && (
@@ -112,18 +113,32 @@ export default function SignIn() {
                     )}
                   </Alert>
                 )}
-                <TextField
-                  margin="normal"
-                  required
-                  onChange={(e) => state.change(e.target.name, e.target.value)}
-                  value={state.loginData.password}
-                  fullWidth
-                  name="password"
-                  label="Password"
-                  type="password"
-                  id="password"
-                  autoComplete="current-password"
-                />
+                <div className="relative">
+                  <TextField
+                    required
+                    fullWidth
+                    onChange={(e) =>
+                      state.change(e.target.name, e.target.value)
+                    }
+                    value={state.loginData.password}
+                    name="password"
+                    label="Password"
+                    type={passwordVisible === true ? "text" : "password"}
+                    id="password"
+                    autoComplete="new-password"
+                  />
+                  {passwordVisible === true ? (
+                    <IoEyeOutline
+                      id="password-visibility"
+                      onClick={() => setPasswordVisible(!passwordVisible)}
+                    />
+                  ) : (
+                    <IoEyeOffSharp
+                      id="password-visibility"
+                      onClick={() => setPasswordVisible(!passwordVisible)}
+                    />
+                  )}
+                </div>
                 {state.loginData.passwordError && (
                   <Alert
                     variant="outlined"
@@ -167,7 +182,11 @@ export default function SignIn() {
                     </Link>
                   </Grid>
                   <Grid item>
-                    <Link sx={{ cursor: "pointer" }} onClick={() => state.nav("/sign-up")} variant="body2">
+                    <Link
+                      sx={{ cursor: "pointer" }}
+                      onClick={() => state.nav("/sign-up")}
+                      variant="body2"
+                    >
                       {"Don't have an account? Sign Up"}
                     </Link>
                   </Grid>
