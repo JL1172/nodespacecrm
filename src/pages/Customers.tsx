@@ -14,20 +14,14 @@ import Paper from "@mui/material/Paper";
 import MenuIcon from "@mui/icons-material/Menu";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import { mainListItems, secondaryListItems } from "../resources/listItems";
-import Chart from "../components/Chart";
 import { RiLogoutBoxLine } from "react-icons/ri";
 import { initialStateForDashBoard, useDashBoard } from "../hooks/useDashBoard";
 import { useNavigate } from "react-router-dom";
-import Messages from "../components/Messages";
-import Revenue from "../components/Revenue";
+import { Tab, Tabs } from "@mui/material";
+import { useState } from "react";
+import BasicSpeedDial from "../components/SpeedDial";
+import { useCustomer } from "../hooks/useCustomer";
 
-//todo need to do the following
-/**
- * wire up customers module
- * wire up projects module
- * wire up messaging module
- * then on the dashboard, just put most recent todos
- */
 //eslint-disable-next-line
 function Copyright(props: any) {
   return (
@@ -96,11 +90,24 @@ const Drawer = styled(MuiDrawer, {
 
 const defaultTheme = createTheme();
 
-export default function Dashboard() {
+export default function Customers() {
   const nav = useNavigate();
+  //defaults dont change
   const [data, change, log_out] = useDashBoard(initialStateForDashBoard, nav);
   const { open } = data;
-
+   //tabs contorl
+   const [value, setValue] = useState(0);
+   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
+    event.preventDefault();
+    setValue(newValue);
+   }
+   //useCustomerHook
+   //todo need to fetch customers, need to feed initial state, need to map over customers,
+  //  const [data, fetchCustomers] = useCustomer() 
+  //todo need to render customers, need to style Customer component, need to modify and hook up 
+  //todo speed dial
+  //todo need to create create customer form 
+  //todo nothing is hooked up
   return (
     <ThemeProvider theme={defaultTheme}>
       <Box sx={{ display: "flex" }}>
@@ -130,7 +137,7 @@ export default function Dashboard() {
               noWrap
               sx={{ flexGrow: 1 }}
             >
-              Dashboard
+              Customers
             </Typography>
             <IconButton color="inherit" onClick={() => log_out()}>
               {/* <Badge badgeContent={4} color="secondary"> */}
@@ -173,22 +180,27 @@ export default function Dashboard() {
         >
           <Toolbar />
           <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
-            <Grid container spacing={3}>
-              {/* Chart */}
+            <Grid container spacing={3}>    
+              <Grid item xs={12} md={8} lg={9}>
+              <Tabs value={value} onChange={handleChange} centered>
+                <Tab label="Customers" />
+                <Tab label="Message" />
+                <Tab label="Tasks" />
+              </Tabs>
+              </Grid>
               <Grid item xs={12} md={8} lg={9}>
                 <Paper
                   sx={{
                     p: 2,
                     display: "flex",
                     flexDirection: "column",
-                    height: 240,
+                    height: "100vh",
                   }}
                 >
-                  <Chart />
+                  {/* need to render customer component map over after doing api call */}
                 </Paper>
               </Grid>
-              {/* Recent Revenue */}
-              <Grid item xs={12} md={4} lg={3}>
+              {/* <Grid item xs={12} md={4} lg={3}>
                 <Paper
                   sx={{
                     p: 2,
@@ -196,21 +208,19 @@ export default function Dashboard() {
                     flexDirection: "column",
                     height: 240,
                   }}
-                >
-                  <Revenue />
-                </Paper>
+                ></Paper>
               </Grid>
-              {/* Recent Orders */}
               <Grid item xs={12}>
-                <Paper sx={{ p: 2, display: "flex", flexDirection: "column" }}>
-                  <Messages />
-                </Paper>
-              </Grid>
+                <Paper
+                  sx={{ p: 2, display: "flex", flexDirection: "column" }}
+                ></Paper>
+              </Grid> */}
             </Grid>
             <Copyright sx={{ pt: 4 }} />
           </Container>
         </Box>
       </Box>
+      <BasicSpeedDial />
     </ThemeProvider>
   );
 }

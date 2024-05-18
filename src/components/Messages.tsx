@@ -58,11 +58,11 @@ const rows = [
 function preventDefault(event: React.MouseEvent) {
   event.preventDefault();
 }
-
-export default function Orders() {
+//todo will be recent messages or todos 
+export default function Messages() {
   return (
     <React.Fragment>
-      <Title>Recent Orders</Title>
+      <Title>Recent Messages</Title>
       <Table size="small">
         <TableHead>
           <TableRow>
@@ -85,8 +85,8 @@ export default function Orders() {
           ))}
         </TableBody>
       </Table>
-      <Link color="primary" href="#" onClick={preventDefault} sx={{ mt: 3 }}>
-        See more orders
+      <Link color="primary" href="#/aflksajdlkf" onClick={preventDefault} sx={{ mt: 3 }}>
+        See more messages
       </Link>
     </React.Fragment>
   );

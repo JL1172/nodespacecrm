@@ -11,7 +11,7 @@ import { Settings } from '@mui/icons-material';
 
 export const mainListItems = (
   <React.Fragment>
-    <ListItemButton>
+    <ListItemButton href='/protected'>
       <ListItemIcon>
         <DashboardIcon />
       </ListItemIcon>
@@ -23,7 +23,7 @@ export const mainListItems = (
       </ListItemIcon>
       <ListItemText primary="Projects" />
     </ListItemButton>
-    <ListItemButton>
+    <ListItemButton href='/customer'>
       <ListItemIcon>
         <PeopleIcon />
       </ListItemIcon>
